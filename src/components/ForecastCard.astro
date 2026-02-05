@@ -1,0 +1,103 @@
+---
+import HashBadge from './HashBadge.astro';
+
+interface Props {
+  forecast: {
+    ticker: string;
+    company_name: string;
+    analyst: string;
+    quarter: string;
+    eps_estimate: string;
+    revenue_estimate: string;
+    confidence: string;
+    thesis: string;
+    key_drivers: any;
+    calculation_worksheet: any;
+    data_sources: any;
+    citations: any;
+    prompt_used: string;
+    raw_response: string;
+    content_hash: string;
+  };
+}
+const { forecast: f } = Astro.props;
+---
+<div class="border border-stone-200 rounded-lg p-4 mb-3">
+  <div class="flex items-center justify-between mb-2">
+    <div class="flex items-center gap-3">
+      <span class="font-semibold text-stone-900">{f.ticker}</span>
+      <span class="text-sm text-stone-500">{f.company_name}</span>
+      <span class="text-xs bg-orange-50 text-orange-700 px-2 py-0.5 rounded">{f.analyst}</span>
+      <span class="text-xs text-stone-400">{f.quarter}</span>
+    </div>
+    <HashBadge hash={f.content_hash} />
+  </div>
+
+  <div class="flex gap-6 text-sm mb-3">
+    <div>
+      <span class="text-stone-400">EPS</span>
+      <span class="ml-1 font-mono font-medium text-stone-900">${f.eps_estimate}</span>
+    </div>
+    {f.revenue_estimate && (
+      <div>
+        <span class="text-stone-400">Revenue</span>
+        <span class="ml-1 font-mono font-medium text-stone-900">
+          ${(parseFloat(f.revenue_estimate) / 1e9).toFixed(1)}B
+        </span>
+      </div>
+    )}
+    {f.confidence && (
+      <div>
+        <span class="text-stone-400">Confidence</span>
+        <span class="ml-1 font-mono font-medium text-stone-900">{(parseFloat(f.confidence) * 100).toFixed(0)}%</span>
+      </div>
+    )}
+  </div>
+
+  <details class="mb-2">
+    <summary class="text-sm text-stone-500 cursor-pointer hover:text-orange-600">Thesis</summary>
+    <p class="text-sm text-stone-600 mt-2 whitespace-pre-wrap">{f.thesis}</p>
+  </details>
+
+  {f.key_drivers && (
+    <details class="mb-2">
+      <summary class="text-sm text-stone-500 cursor-pointer hover:text-orange-600">Key Drivers</summary>
+      <pre class="text-xs text-stone-600 mt-2 bg-stone-50 p-3 rounded overflow-x-auto">{JSON.stringify(f.key_drivers, null, 2)}</pre>
+    </details>
+  )}
+
+  {f.calculation_worksheet && (
+    <details class="mb-2">
+      <summary class="text-sm text-stone-500 cursor-pointer hover:text-orange-600">Calculation Worksheet</summary>
+      <pre class="text-xs text-stone-600 mt-2 bg-stone-50 p-3 rounded overflow-x-auto">{JSON.stringify(f.calculation_worksheet, null, 2)}</pre>
+    </details>
+  )}
+
+  {f.data_sources && (
+    <details class="mb-2">
+      <summary class="text-sm text-stone-500 cursor-pointer hover:text-orange-600">Data Sources</summary>
+      <pre class="text-xs text-stone-600 mt-2 bg-stone-50 p-3 rounded overflow-x-auto">{JSON.stringify(f.data_sources, null, 2)}</pre>
+    </details>
+  )}
+
+  {f.citations && (
+    <details class="mb-2">
+      <summary class="text-sm text-stone-500 cursor-pointer hover:text-orange-600">Citations</summary>
+      <pre class="text-xs text-stone-600 mt-2 bg-stone-50 p-3 rounded overflow-x-auto">{JSON.stringify(f.citations, null, 2)}</pre>
+    </details>
+  )}
+
+  {f.prompt_used && (
+    <details class="mb-2">
+      <summary class="text-sm text-stone-500 cursor-pointer hover:text-orange-600">Raw Prompt</summary>
+      <pre class="text-xs text-stone-600 mt-2 bg-stone-50 p-3 rounded overflow-x-auto whitespace-pre-wrap">{f.prompt_used}</pre>
+    </details>
+  )}
+
+  {f.raw_response && (
+    <details class="mb-2">
+      <summary class="text-sm text-stone-500 cursor-pointer hover:text-orange-600">Raw AI Response</summary>
+      <pre class="text-xs text-stone-600 mt-2 bg-stone-50 p-3 rounded overflow-x-auto whitespace-pre-wrap">{f.raw_response}</pre>
+    </details>
+  )}
+</div>

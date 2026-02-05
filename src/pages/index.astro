@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const forecastDir = path.join(process.cwd(), 'forecasts');
+const files = fs.existsSync(forecastDir)
+  ? fs.readdirSync(forecastDir).filter(f => f.endsWith('.json')).sort().reverse()
+  : [];
+
+const manifests = files.map(f => {
+  const data = JSON.parse(fs.readFileSync(path.join(forecastDir, f), 'utf-8'));
+  return { filename: f, date: data.date, forecast_count: data.forecast_count, stocks_processed: data.stocks_processed };
+});
+---
+<Base title="Forecast Audit Log">
+  <h1 class="text-2xl font-bold text-stone-900 mb-6">Daily Forecast Logs</h1>
+
+  {manifests.length === 0 ? (
+    <p class="text-stone-500">No forecasts published yet.</p>
+  ) : (
+    <div class="space-y-2">
+      {manifests.map(m => (
+        <a
+          href={`/wallstreetarena-audit/${m.date}/`}
+          class="block border border-stone-200 rounded-lg p-4 hover:border-orange-300 hover:bg-orange-50/30 transition-colors"
+        >
+          <div class="flex items-center justify-between">
+            <span class="font-semibold text-stone-900">{m.date}</span>
+            <span class="text-sm text-stone-500">{m.forecast_count} forecasts · {m.stocks_processed} stocks</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  )}
+</Base>

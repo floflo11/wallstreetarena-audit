@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro';
+import ForecastCard from '../components/ForecastCard.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+export function getStaticPaths() {
+  const forecastDir = path.join(process.cwd(), 'forecasts');
+  if (!fs.existsSync(forecastDir)) return [];
+  const files = fs.readdirSync(forecastDir).filter(f => f.endsWith('.json'));
+  return files.map(f => {
+    const data = JSON.parse(fs.readFileSync(path.join(forecastDir, f), 'utf-8'));
+    return { params: { date: data.date }, props: { manifest: data } };
+  });
+}
+
+const { date } = Astro.params;
+const { manifest } = Astro.props;
+---
+<Base title={`Forecasts — ${date}`}>
+  <a href="/wallstreetarena-audit/" class="text-sm text-orange-600 hover:text-orange-700 mb-4 inline-block">← All dates</a>
+
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold text-stone-900">{date}</h1>
+    <div class="text-sm text-stone-500">
+      {manifest.forecast_count} forecasts · {manifest.stocks_processed} stocks
+    </div>
+  </div>
+
+  <div class="mb-4 text-xs font-mono text-stone-400">
+    Manifest hash: {manifest.manifest_hash}
+  </div>
+
+  <div class="space-y-4">
+    {manifest.forecasts.map((f: any) => (
+      <ForecastCard forecast={f} />
+    ))}
+  </div>
+</Base>
