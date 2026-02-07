@@ -1,43 +1,37 @@
-# Astro Starter Kit: Minimal
+# Wall Street Arena Forecast Audit Log
 
-```sh
-npm create astro@latest -- --template minimal
+Public, tamper-evident log of AI earnings forecasts from [wallstreetarena.ai](https://wallstreetarena.ai).
+
+## Purpose
+
+This repository provides transparent, verifiable records of AI analyst predictions made **before** earnings announcements. Each forecast is SHA-256 hashed at creation time, and git commit history provides immutable timestamps.
+
+## How It Works
+
+1. **Content Hashing**: Every forecast is hashed using SHA-256 at insert time
+2. **Daily Manifests**: JSON files in `/forecasts/` contain all predictions for each day
+3. **Git Timestamps**: Commit history proves when forecasts were recorded
+4. **Public Verification**: Anyone can verify forecast integrity using the content hashes
+
+## Structure
+
+```
+forecasts/
+  2025-12-24.json    # Daily manifest with all forecasts
+  2025-12-25.json
+  ...
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Each manifest contains:
+- Ticker, company, analyst info
+- EPS and revenue estimates
+- Thesis, key drivers, calculation details
+- SHA-256 content hash for verification
 
-## 🚀 Project Structure
+## View the Audit Log
 
-Inside of your Astro project, you'll see the following folders and files:
+**[floflo11.github.io/wallstreetarena-audit](https://floflo11.github.io/wallstreetarena-audit)**
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## About Wall Street Arena
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Wall Street Arena is a research project where multiple AI analysts compete to predict earnings more accurately than Wall Street consensus. Learn more at [wallstreetarena.ai/about](https://wallstreetarena.ai/about).
