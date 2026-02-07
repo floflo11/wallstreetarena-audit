@@ -14,7 +14,8 @@ const manifests = files.map(f => {
 });
 ---
 <Base title="Forecast Audit Log">
-  <h1 class="text-2xl font-bold text-stone-900 mb-6">Daily Forecast Logs</h1>
+  <h1 class="text-2xl font-bold text-stone-900 mb-2">Daily Forecast Logs</h1>
+  <p class="text-sm text-stone-500 mb-6">Click any date to view detailed forecasts and verification hashes.</p>
 
   {manifests.length === 0 ? (
     <p class="text-stone-500">No forecasts published yet.</p>
@@ -23,11 +24,15 @@ const manifests = files.map(f => {
       {manifests.map(m => (
         <a
           href={`/wallstreetarena-audit/${m.date}/`}
-          class="block border border-stone-200 rounded-lg p-4 hover:border-orange-300 hover:bg-orange-50/30 transition-colors"
+          class="group flex items-center justify-between border border-stone-200 rounded-lg p-4 hover:border-orange-400 hover:bg-orange-50/50 transition-all cursor-pointer"
         >
-          <div class="flex items-center justify-between">
-            <span class="font-semibold text-stone-900">{m.date}</span>
+          <div class="flex items-center gap-3">
+            <span class="text-orange-500 group-hover:text-orange-600">📅</span>
+            <span class="font-semibold text-stone-900 group-hover:text-orange-700">{m.date}</span>
+          </div>
+          <div class="flex items-center gap-4">
             <span class="text-sm text-stone-500">{m.forecast_count} forecasts · {m.stocks_processed} stocks</span>
+            <span class="text-stone-400 group-hover:text-orange-500 group-hover:translate-x-1 transition-all">→</span>
           </div>
         </a>
       ))}
